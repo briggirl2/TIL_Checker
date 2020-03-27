@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+
+        <style>
+            #names {
+                width: 300px;
+            }
+        </style>
+    </head>
+    <body>
+        <form action="{% url 'result' %}" method="get">
+            <input id="names" type="text" name="names" value="TIL 참여자들의 github name을 입력하세요." />
+            <br />
+            <input id="start_date" type="date" name="start_date" />
+            <br />
+            <input id="end_date" type="date" name="end_date" />
+            <br />
+            <input type="submit" value="OK" />
+        </form>
+    </body>
+</html>

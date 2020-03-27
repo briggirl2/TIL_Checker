@@ -3,18 +3,18 @@ import datetime
 from bs4 import BeautifulSoup
 
 
-def parse_github(id):
+def parse_github(id, start_date_input, end_date_input):
     res = requests.get("https://github.com/" + id)
     soup = BeautifulSoup(res.content, "html.parser")
 
-    # commit 안한 날 색 확인
-    no_mark = soup.select("div.contrib-legend ul.legend li")[0]
-    no_mark_color = no_mark["style"][18:]
-    # print(no_mark_color)
+    # # commit 안한 날 색 확인
+    # no_mark = soup.select("div.contrib-legend ul.legend li")[0]
+    # no_mark_color = no_mark["style"][18:]
+    # # print(no_mark_color)
 
     # 검색 시작일 ~ 종료일 범위 리스트 구하기
-    start_date = datetime.datetime.strptime("2020-03-23", "%Y-%m-%d")
-    end_date = datetime.datetime.strptime("2020-03-29", "%Y-%m-%d")
+    start_date = datetime.datetime.strptime(start_date_input, "%Y-%m-%d")
+    end_date = datetime.datetime.strptime(end_date_input, "%Y-%m-%d")
     date_generated = [
         start_date + datetime.timedelta(days=x)
         for x in range(0, (end_date - start_date).days + 1)
@@ -33,9 +33,9 @@ def parse_github(id):
         day_rect = soup.find("rect", {"data-date": date})
         print(day_rect)
         try:
-            if day_rect["fill"] != no_mark_color:
+            if day_rect["data-count"] != "0":
                 data["commit_day_cnt"] += 1
-                data["commit_cnt"] += day_rect["data-count"]
+                data["commit_cnt"] = data["commit_cnt"] + int(day_rect["data-count"])
         except TypeError:
             continue
 
